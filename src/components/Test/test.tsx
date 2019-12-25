@@ -4,6 +4,7 @@ import {
   IWithSuspenseFetcherInjectedProps,
   WithSuspenseFetcher,
 } from '../../decorators/with-suspense-fetcher';
+import { composer } from '../../decorators/composer';
 
 interface ITestProps extends Partial<IWithSuspenseFetcherInjectedProps> {
   name: string;
@@ -12,7 +13,7 @@ interface ITestProps extends Partial<IWithSuspenseFetcherInjectedProps> {
 const fetch = () =>
   axios.get('http://localhost:3000/api/test').then(({ data }) => data);
 
-@WithSuspenseFetcher({ fetch })
+@WithSuspenseFetcher(fetch)
 export class Test extends React.Component<ITestProps> {
   render() {
     return (
@@ -24,3 +25,13 @@ export class Test extends React.Component<ITestProps> {
     );
   }
 }
+
+export const Test2 = composer()
+  .withSuspenseFetcher(fetch)
+  .compose(({ name, fetchData, reFetch }: ITestProps) => (
+    <div>
+      <div>test2 {name}</div>
+      <div>{fetchData.test}</div>
+      <button onClick={() => reFetch(fetch)}>Fetch</button>
+    </div>
+  ));

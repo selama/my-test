@@ -71,7 +71,9 @@ export interface IWithSuspenseFetcherInjectedProps {
   reFetch(fetch: () => Promise<any>): void;
 }
 
-const withSuspenseFetcherHOC = <P extends IWithSuspenseFetcherInjectedProps>(
+export const withSuspenseFetcherHOC = <
+  P extends IWithSuspenseFetcherInjectedProps
+>(
   initialFetch: () => Promise<any>,
   WrappedComponent: React.ComponentType<P>,
 ) => (props: Omit<P, keyof IWithSuspenseFetcherInjectedProps>) => (
@@ -85,12 +87,7 @@ const withSuspenseFetcherHOC = <P extends IWithSuspenseFetcherInjectedProps>(
   </React.Suspense>
 );
 
-interface IWithSuspenseFetcherProps {
-  fetch(): Promise<any>;
-}
-
-export const WithSuspenseFetcher: any = ({
-  fetch,
-}: IWithSuspenseFetcherProps) => (
-  component: React.ComponentType<IWithSuspenseFetcherInjectedProps>,
-) => withSuspenseFetcherHOC(fetch, component);
+export const WithSuspenseFetcher: (fetch: () => Promise<any>) => any = (
+  fetch: () => Promise<any>,
+) => (component: React.ComponentType<IWithSuspenseFetcherInjectedProps>) =>
+  withSuspenseFetcherHOC(fetch, component);
