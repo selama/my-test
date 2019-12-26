@@ -19,7 +19,7 @@ const initailFetchBuilder: (props: ITestProps) => () => Promise<ITestDTO> = ({
 }) => () =>
   axios.get(`http://localhost:3000/api/test/${name}`).then(({ data }) => data);
 
-@WithSuspenseFetcher(fetchBuilder)
+@WithSuspenseFetcher(initailFetchBuilder)
 export class Test extends React.Component<ITestProps> {
   render() {
     const anotherFetch = () =>
