@@ -14,7 +14,7 @@ interface ITestProps
   name: string;
 }
 
-const fetchBuilder: (props: ITestProps) => () => Promise<ITestDTO> = ({
+const initailFetchBuilder: (props: ITestProps) => () => Promise<ITestDTO> = ({
   name,
 }) => () =>
   axios.get(`http://localhost:3000/api/test/${name}`).then(({ data }) => data);
@@ -22,28 +22,28 @@ const fetchBuilder: (props: ITestProps) => () => Promise<ITestDTO> = ({
 @WithSuspenseFetcher(fetchBuilder)
 export class Test extends React.Component<ITestProps> {
   render() {
+    const anotherFetch = () =>
+      axios
+        .get(`http://localhost:3000/api/test/${this.props.name}`)
+        .then(({ data }) => data);
     return (
       <div>
         <div>my name is: {this.props.name}</div>
         <div>{this.props.fetchData.test}</div>
-        <button
-          onClick={() =>
-            this.props.reFetch(fetchBuilder({ name: this.props.name }))
-          }
-        >
-          Fetch
-        </button>
+        <button onClick={() => this.props.reFetch(anotherFetch)}>Fetch</button>
       </div>
     );
   }
 }
 
 export const Test2 = composer()
-  .withSuspenseFetcher(fetchBuilder)
+  .withSuspenseFetcher(initailFetchBuilder)
   .compose(({ name, fetchData, reFetch }: ITestProps) => (
     <div>
       <div>test2 {name}</div>
       <div>{fetchData.test}</div>
-      <button onClick={() => reFetch(fetchBuilder({ name }))}>Fetch</button>
+      <button onClick={() => reFetch(initailFetchBuilder({ name }))}>
+        Fetch
+      </button>
     </div>
   ));
