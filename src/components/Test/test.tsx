@@ -6,11 +6,15 @@ import {
 } from '../../decorators/with-suspense-fetcher';
 import { composer } from '../../decorators/composer';
 
-interface ITestProps extends Partial<IWithSuspenseFetcherInjectedProps> {
+interface ITestDTO {
+  test: number;
+}
+interface ITestProps
+  extends Partial<IWithSuspenseFetcherInjectedProps<ITestDTO>> {
   name: string;
 }
 
-const fetchBuilder: (props: ITestProps) => () => Promise<any> = ({
+const fetchBuilder: (props: ITestProps) => () => Promise<ITestDTO> = ({
   name,
 }) => () =>
   axios.get(`http://localhost:3000/api/test/${name}`).then(({ data }) => data);

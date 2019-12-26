@@ -66,17 +66,15 @@ class FetcherHOC extends React.Component<IFetcherHOCProps, IFetcherHOCState> {
   }
 }
 
-export interface IWithSuspenseFetcherInjectedProps {
-  fetchData: any;
-  reFetch(fetch: () => Promise<any>): void;
+export interface IWithSuspenseFetcherInjectedProps<T> {
+  fetchData: T;
+  reFetch(fetch: () => Promise<T>): void;
 }
 
-export const withSuspenseFetcherHOC = <
-  P extends IWithSuspenseFetcherInjectedProps
->(
+export const withSuspenseFetcherHOC = (
   fetchBuilder: (p: any) => () => Promise<any>,
-  WrappedComponent: React.ComponentType<P>,
-) => (props: Omit<P, keyof IWithSuspenseFetcherInjectedProps>) => (
+  WrappedComponent: React.ComponentType<any>,
+) => (props: any) => (
   <React.Suspense fallback="Loading">
     <FetcherHOC
       fetcher={getSuspenseFetcher()}
@@ -89,5 +87,5 @@ export const withSuspenseFetcherHOC = <
 
 export const WithSuspenseFetcher: any = (
   fetchBuilder: (props: any) => () => Promise<any>,
-) => (component: React.ComponentType<IWithSuspenseFetcherInjectedProps>) =>
+) => (component: React.ComponentType<any>) =>
   withSuspenseFetcherHOC(fetchBuilder, component);
