@@ -3,8 +3,10 @@ import { withSuspenseFetcherHOC } from './with-suspense-fetcher';
 class Composer {
   private readonly funcs = [];
 
-  withSuspenseFetcher(fetch: () => Promise<any>) {
-    this.funcs.push(component => withSuspenseFetcherHOC(fetch, component));
+  withSuspenseFetcher(fetchBuilder: (props: any) => () => Promise<any>) {
+    this.funcs.push(component =>
+      withSuspenseFetcherHOC(fetchBuilder, component),
+    );
     return this;
   }
 

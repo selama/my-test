@@ -13,7 +13,7 @@ app.use(
   }),
 );
 
-app.use('/api/test', (req, res) => res.send({test: Math.random()}))
+app.use('/api/test/:name', (req, res) => req.params.name === 'eden' ? res.send({test: Math.random()}) : res.send({test: `--->${Math.random()}`}));
 
 // Define a route to render our initial HTML.
 app.use('/', (req, res) => {
